@@ -419,6 +419,7 @@ import * as m from "SomeModule";
 ## 注意事项
 
 * ArkTS不支持var，请使用let声明变量。
+* TODO
 
 ## ArkTS声明式UI组件示例
 
@@ -464,3 +465,4 @@ struct HelloWorld {
 * [ECMAScript 5.1 语言规范](https://262.ecma-international.org/5.1/)
 * [TypeScript手册](https://www.typescriptlang.org/docs/handbook/intro.html)
 * [操作符](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators)
+* [从TypeScript到ArkTS的适配规则](https://docs.openharmony.cn/pages/v4.0/zh-cn/application-dev/quick-start/typescript-to-arkts-migration-guide.md)
