@@ -1,3 +1,5 @@
 /*_files
 /*.html
+/.vitepress/cache
+/.vitepress/dist
 !*.md

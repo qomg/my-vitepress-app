@@ -1,8 +1,14 @@
+<!-- ---
+title: "ArkTS基础语法"
+format: html
+toc: true
+--- -->
+
 # ArkTS基础语法
 
 > TypeScript在JavaScript的基础上添加静态类型定义
 >
-> ArkTS在TypeScript的基础上，匹配ArkUI框架，扩展了声明式UI描述、自定义组件、动态扩展UI元素、状态管理和渲染控制、并发任务等多种能力
+> ArkTS在TypeScript的基础上，匹配ArkUI框架，扩展了声明式UI描述、自定义组件、动态扩展UI元素、状态管理和渲染控制、并发任务等多种能力。但对TypeScript语法做了一些限制。
 
 ## ECMAScript关键字
 
@@ -21,14 +27,41 @@
 |interface| package |protected |static|
 |yield|
 
+## 变量声明
+
+* `let`允许在块级作用域中声明变量，而`var`声明的变量具有函数级作用域。
+* `const`声明的变量是常量，其值在初始化后不能更改。
+* `static`静态字段属于类本身，类的所有实例共享一个静态字段。
+* 限制使用`public`、`protected`、`private`三种方式修饰字段可见性，默认`public`。
+
 ```typescript
 // 示例代码
+const fontSize = "16fr";
+
 class MagicWord {
-    static readonly TAG: string = "[MagicWord]"
-    static greeting() {
-        console.log('Hello world');
-    }
+  static readonly TAG: string = "[MagicWord]"
+  static greeting() {
+    console.log('Hello world');
+  }
 }
+```
+
+## 基础类型
+
+* 数字`number` `Number`所有的数字都是浮点数，支持十进制、二进制、八进制和十六进制表示。
+* 字符串`string`使用双引号(`"`)或单引号(`'`)表示。
+* 布尔用于`boolean`标识true和false。
+* 数组`array`有两种方式定义数组使用`[]`后缀或`Array<类型>`泛型。
+* 枚举类型`enum`可以为一组数值赋予友好的名字。
+* 对象类型`Object`是所有引用类型的基类型。任何值，包括基本类型的值（它们会被自动装箱），都可以直接被赋给Object类型的变量。
+* 空值`null`表示变量值为空。
+* 未定义类型`undefined`表示变量值未定义。
+* 空类型`void`用于指定函数没有返回值。由于void是引用类型，因此它可以用于泛型类型参数。
+* 元组类型表示一个已知元素数量和类型的数组，各元素的类型不必相同。
+* 联合类型`union`表示取值可以为多种类型中的一种。
+* 匿名类型`alias`匿名类型（数组、函数、对象字面量或联合类型）提供名称，或为已有类型提供替代名称。
+
+```typescript
 // 变量数字
 let n0 = 0x123;
 let n1 = 0b11;
@@ -65,37 +98,18 @@ type Matrix = number[][];
 type Handler = (s: string, no: number) => string;
 type Predicate <T> = (x: T) => Boolean;
 type NullableObject = Object | null;
-// type Point = {
-//   x: number;
-//   y: number;
-// };
-// class Point {
-//   x: number;
-//   y: number;
-// }
 ```
 
-## 变量声明
-
-* `let`允许在块级作用域中声明变量，而`var`声明的变量具有函数级作用域。
-* `const`声明的变量是常量，其值在初始化后不能更改。
-* `static`静态字段属于类本身，类的所有实例共享一个静态字段。
-* 限制使用`public`、`protected`、`private`三种方式修饰字段可见性，默认`public`。
-
-## 基础类型
-
-* 数字`number` `Number`所有的数字都是浮点数，支持十进制、二进制、八进制和十六进制表示。
-* 字符串`string`使用双引号(`"`)或单引号(`'`)表示。
-* 布尔用于`boolean`标识true和false。
-* 数组`array`有两种方式定义数组使用`[]`后缀或`Array<类型>`泛型。
-* 枚举类型`enum`可以为一组数值赋予友好的名字。
-* 对象类型`Object`是所有引用类型的基类型。任何值，包括基本类型的值（它们会被自动装箱），都可以直接被赋给Object类型的变量。
-* 空值`null`表示变量值为空。
-* 未定义类型`undefined`表示变量值未定义。
-* 空类型`void`用于指定函数没有返回值。由于void是引用类型，因此它可以用于泛型类型参数。
-* 元组类型表示一个已知元素数量和类型的数组，各元素的类型不必相同。
-* 联合类型`union`表示取值可以为多种类型中的一种。
-* 匿名类型`alias`匿名类型（数组、函数、对象字面量或联合类型）提供名称，或为已有类型提供替代名称。
+<!-- ```typescript
+type Point = {
+  x: number;
+  y: number;
+};
+class Point {
+  x: number;
+  y: number;
+}
+``` -->
 
 ## 运算符
 
@@ -210,7 +224,7 @@ someArray.forEach((entry, index, array) => {
 })
 ```
 
-```typescript
+<!-- ```typescript
 let n = 0;
 let x = 0;
 while (n < 3) {
@@ -247,7 +261,7 @@ for (let x = 0; x < 100; x++) {
   }
   sum += x;
 }
-```
+``` -->
 
 ## 异常捕获
 
@@ -382,7 +396,9 @@ let c: C = {n: 42, s: 'foo'};  // 使用变量的类型，代替 new 表达式
 
 ## 空安全
 
-> 默认情况下，ArkTS中的所有类型都是不可为空的，因此类型的值不能为空。这类似于TypeScript的严格空值检查模式（strictNullChecks），但规则更严格。
+> 默认情况下，ArkTS中的所有类型都是不可为空的，因此类型的值不能为空。
+>
+> 这类似于TypeScript的严格空值检查模式（strictNullChecks），但规则更严格。
 
 * 可空变量定义，联合类型`T | null | undefined`。
 * 非空断言运算符，后缀运算符!可用于断言其操作数为非空。应用于空值时，运算符将抛出错误。
@@ -457,9 +473,10 @@ let t = new shapes.Shapes.Triangle();
 * 非`void`返回类型函数，尽量*标注*返回类型。
 * 开发过程中注意区分，*变量*、*函数*、*类*、*接口*、*枚举类型/枚举值*、*命名空间*。
 
-```javascript
+<!-- ```javascript
 限制使用标准库
-ArkTS不允许使用TypeScript或JavaScript标准库中的某些接口。大部分接口与动态特性有关。ArkTS中禁止使用以下接口：
+ArkTS不允许使用TypeScript或JavaScript标准库中的某些接口。
+大部分接口与动态特性有关。ArkTS中禁止使用以下接口：
 
 全局对象的属性和方法：eval
 
@@ -468,19 +485,17 @@ Object：__proto__、__defineGetter__、__defineSetter__、 __lookupGetter__、_
 Reflect：apply、construct、defineProperty、deleteProperty、 getOwnPropertyDescriptor、getPrototypeOf、 isExtensible、preventExtensions、 setPrototypeOf
 
 Proxy：handler.apply()、handler.construct()、 handler.defineProperty()、handler.deleteProperty()、handler.get()、 handler.getOwnPropertyDescriptor()、handler.getPrototypeOf()、 handler.has()、handler.isExtensible()、handler.ownKeys()、 handler.preventExtensions()、handler.set()、handler.setPrototypeOf()
-```
+``` -->
 
 ```typescript
 let value_b: boolean = true; // 或者 let value_b = true
 let value_n: number = 42; // 或者 let value_n = 42
 let value_o1: Object = true;
 let value_o2: Object = 42;
-
 interface Identity {
   id: number
   name: string
 }
-
 interface Contact {
   email: string
   phoneNumber: string
@@ -500,9 +515,7 @@ function addNum(a: number, b: number): void {
   let logToConsole: (message: string) => void = (message: string): void => {
     console.log(message);
   }
-
   let result = a + b;
-
   logToConsole('result is ' + result);
 }
 // instanceof 结合 as 使用
@@ -510,12 +523,10 @@ class Foo {
   foo: string = ''
   common: string = ''
 }
-
 class Bar {
   bar: string = ''
   common: string = ''
 }
-
 function doSomething(arg: Object) {
   if (arg instanceof Foo) {
       const foo = arg as Foo
@@ -525,7 +536,6 @@ function doSomething(arg: Object) {
       console.log(bar.common) // 必须 as 转换之后访问属性
   }
 }
-
 doSomething(new Foo())
 doSomething(new Bar())
 ```
@@ -566,9 +576,9 @@ struct HelloWorld {
 
 ## 文件类型
 
-* ts后缀，TypeScript文件类型，仅可使用TypeScript标准语法
-* ets后缀，可使用ArkTS基础类库API
-* xxx.d.ts
+* `.ts` TypeScript源码文件类型，仅可使用TypeScript标准语法
+* `.ets` 可使用ArkTS基础类库API
+* `.d.ts` 类、方法、变量的声明文件，用于描述类、方法、变量的类型信息，可用于IDE的代码补全、类型检查等。
 
 ## 扩展阅读
 
