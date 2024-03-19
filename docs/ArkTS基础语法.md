@@ -47,10 +47,10 @@ let arr2: Array<string> = ["a", "b", "c"];
 // 枚举
 enum Color {White = 0xFF, Grey = 0x7F, Black = 0x00 }; 
 let c: Color = Color.Grey;
-// 未知类型，运行时确定，编译时不固定
-let notSure: unknown = 4;
-notSure = 'maybe a string instead';
-notSure = false;
+// // 未知类型，运行时确定，编译时不固定
+// let notSure: unknown = 4;
+// notSure = 'maybe a string instead';
+// notSure = false;
 // undefined 和 null
 let u: undefined = undefined;
 let n: null = null;
@@ -65,10 +65,14 @@ type Matrix = number[][];
 type Handler = (s: string, no: number) => string;
 type Predicate <T> = (x: T) => Boolean;
 type NullableObject = Object | null;
-type Point = {
-  x: number;
-  y: number;
-};
+// type Point = {
+//   x: number;
+//   y: number;
+// };
+// class Point {
+//   x: number;
+//   y: number;
+// }
 ```
 
 ## 变量声明
@@ -76,6 +80,7 @@ type Point = {
 * `let`允许在块级作用域中声明变量，而`var`声明的变量具有函数级作用域。
 * `const`声明的变量是常量，其值在初始化后不能更改。
 * `static`静态字段属于类本身，类的所有实例共享一个静态字段。
+* 限制使用`public`、`protected`、`private`三种方式修饰字段可见性，默认`public`。
 
 ## 基础类型
 
@@ -99,6 +104,7 @@ type Point = {
 * 算术运算符
 * 位运算符
 * 逻辑运算符
+* 展开运算符（慎用）
 
 ```typescript
 let a = 123; // 赋值
@@ -121,9 +127,10 @@ a > 0 // true
 a >= 0 // true
 a < 2 // true
 a <= 1 // true
-// 一元运算符 -、+、--、++
+// 一元运算符 -、+、~、--、++
 -a // -1
 +a // 1
+~a // -2 位非运算
 --a // 0, a=0
 a-- // 0, a=-1
 ++a // 0, a=0
@@ -131,6 +138,12 @@ a++ // 0, a=1
 // 二元运算符 +、-、*、/、%
 // 位运算符 &、|、^、~、<<、>>、>>>
 // 逻辑运算符 &&、||、!
+
+// 展开运算符
+let arr1 = [1, 2, 3];
+let arr2 = new Uint16Array([4, 5, 6]);
+let arr3 = new DerivedFromArray([7, 8, 9]);
+let arr4 = [...arr1, 10, ...arr2, 11, ...arr3];
 ```
 
 ## 条件语句
@@ -150,26 +163,26 @@ if (num % 2==0) {
 // 条件语句 switch...case 语句
 var grade:string = 'A'; 
 switch(grade) { 
-    case 'A': { 
-        console.log('优'); 
-        break; 
-    } 
-    case 'B': { 
-        console.log('良'); 
-        break; 
-    } 
-    case 'C': {
-        console.log('及格'); 
-        break;    
-    } 
-    case 'D': { 
-        console.log('不及格'); 
-        break; 
-    }  
-    default: { 
-        console.log('非法输入'); 
-        break;              
-    } 
+  case 'A': { 
+    console.log('优'); 
+    break; 
+  } 
+  case 'B': { 
+    console.log('良'); 
+    break; 
+  } 
+  case 'C': {
+    console.log('及格'); 
+    break;    
+  } 
+  case 'D': { 
+    console.log('不及格'); 
+    break; 
+  }  
+  default: { 
+    console.log('非法输入'); 
+    break;              
+  } 
 }
 // 条件表达式
 let isValid = Math.random() > 0.5 ? true : false;
@@ -179,7 +192,7 @@ let message = isValid ? 'Valid' : 'Failed';
 ## 循环语句/迭代器
 
 * `for...of` 语句
-* `for...in` 语句
+* 禁止使用~~`for...in` 语句~~
 
 ```typescript
 let someArray = [1, "string", false];
@@ -189,9 +202,12 @@ for (let i = 0; i < someArray.length; i++) {
 for (let entry of someArray) {
   console.log(entry); // 1, "string", false
 }
-for (let index in someArray) {
-  console.log(someArray[index]); // 1, "string", false
-}
+// for (let index in someArray) {
+//   console.log(someArray[index]); // 1, "string", false
+// }
+someArray.forEach((entry, index, array) => {
+  console.log(entry); // 1, "string", false
+})
 ```
 
 ```typescript
@@ -241,8 +257,9 @@ for (let x = 0; x < 100; x++) {
 
 ```typescript
 try {
-  throw new Error('this error');
-} catch (e) {
+  // ArkTS只支持抛出Error类或其派生类的实例。禁止抛出其他类型（例如number或string）的数据。
+  throw new Error('this error'); 
+} catch (e) { // 不支持在catch语句标注类型
   console.log("Oh well.");
 } finally {
   console.log("final");
@@ -291,6 +308,14 @@ function foo(x: string): void; // 定义string参数类型
 // 根据上述定义编写函数实现
 function foo(x: number | string): void {
   /* 函数实现 */
+}
+// 非函数重载
+interface Document {
+  createElement(tagName: number): HTMLDivElement
+  createElement(tagName: boolean): HTMLSpanElement
+  createElement(tagName: string, value: number): HTMLCanvasElement
+  createElement(tagName: string): HTMLElement
+  createElement(tagName: Object): Element
 }
 ```
 
@@ -410,16 +435,100 @@ export namespace Shapes {
 import * as shapes from "./shapes";
 let t = new shapes.Shapes.Triangle();
 
-declare module "SomeModule" {
-  export function fn(): string;
-}
-import * as m from "SomeModule";
+// declare module "SomeModule" {
+//   export function normalize(s: string): string;
+// }
+// import * as m from "SomeModule";
+// // 从原始模块中导入需要的内容
+// import { normalize } from 'someModule'
 ```
 
-## 注意事项
+## ArkTS限制
 
-* ArkTS不支持var，请使用let声明变量。
-* TODO
+* 不支持`var`，请使用`let`声明变量，局部不可变用`const`。
+* 禁止使用`any`类型
+* 不支持`any`和`unknown`类型。显式指定具体类型。
+* 不支持`with`语句
+* 不支持`is`语句
+* 慎用`keyof`、`typeof`、`instanceof`。
+* 慎用`globalThis`。
+* 仅支持`Partial`、`Required`、`Readonly`和`Record`，不支持TypeScript中其他的Utility Types。
+* 不支持*解构/析构*变量声明或者函数的参数声明。
+* 非`void`返回类型函数，尽量*标注*返回类型。
+* 开发过程中注意区分，*变量*、*函数*、*类*、*接口*、*枚举类型/枚举值*、*命名空间*。
+
+```javascript
+限制使用标准库
+ArkTS不允许使用TypeScript或JavaScript标准库中的某些接口。大部分接口与动态特性有关。ArkTS中禁止使用以下接口：
+
+全局对象的属性和方法：eval
+
+Object：__proto__、__defineGetter__、__defineSetter__、 __lookupGetter__、__lookupSetter__、assign、create、 defineProperties、defineProperty、freeze、 fromEntries、getOwnPropertyDescriptor、getOwnPropertyDescriptors、 getOwnPropertySymbols、getPrototypeOf、 hasOwnProperty、is、isExtensible、isFrozen、 isPrototypeOf、isSealed、preventExtensions、 propertyIsEnumerable、seal、setPrototypeOf
+
+Reflect：apply、construct、defineProperty、deleteProperty、 getOwnPropertyDescriptor、getPrototypeOf、 isExtensible、preventExtensions、 setPrototypeOf
+
+Proxy：handler.apply()、handler.construct()、 handler.defineProperty()、handler.deleteProperty()、handler.get()、 handler.getOwnPropertyDescriptor()、handler.getPrototypeOf()、 handler.has()、handler.isExtensible()、handler.ownKeys()、 handler.preventExtensions()、handler.set()、handler.setPrototypeOf()
+```
+
+```typescript
+let value_b: boolean = true; // 或者 let value_b = true
+let value_n: number = 42; // 或者 let value_n = 42
+let value_o1: Object = true;
+let value_o2: Object = 42;
+
+interface Identity {
+  id: number
+  name: string
+}
+
+interface Contact {
+  email: string
+  phoneNumber: string
+}
+interface Employee extends Identity,  Contact {}
+// ArkTS不支持正则字面量，请使用RegExp()创建正则对象。
+let regex: RegExp = new RegExp('bc*d');
+// 不支持解构/析构变量声明。
+class Point {
+  x: number = 0.0
+  y: number = 0.0
+}
+let {x, y} = new Point(); // 编译错误
+// ArkTS不支持在函数内声明函数，改用lambda函数。
+function addNum(a: number, b: number): void {
+  // 使用lambda函数代替声明函数
+  let logToConsole: (message: string) => void = (message: string): void => {
+    console.log(message);
+  }
+
+  let result = a + b;
+
+  logToConsole('result is ' + result);
+}
+// instanceof 结合 as 使用
+class Foo {
+  foo: string = ''
+  common: string = ''
+}
+
+class Bar {
+  bar: string = ''
+  common: string = ''
+}
+
+function doSomething(arg: Object) {
+  if (arg instanceof Foo) {
+      const foo = arg as Foo
+      console.log(foo.common)
+  } else if (arg instanceof Bar) {
+      const bar = arg as Bar
+      console.log(bar.common) // 必须 as 转换之后访问属性
+  }
+}
+
+doSomething(new Foo())
+doSomething(new Bar())
+```
 
 ## ArkTS声明式UI组件示例
 
@@ -459,10 +568,11 @@ struct HelloWorld {
 
 * ts后缀，TypeScript文件类型，仅可使用TypeScript标准语法
 * ets后缀，可使用ArkTS基础类库API
+* xxx.d.ts
 
 ## 扩展阅读
 
 * [ECMAScript 5.1 语言规范](https://262.ecma-international.org/5.1/)
 * [TypeScript手册](https://www.typescriptlang.org/docs/handbook/intro.html)
 * [操作符](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators)
-* [从TypeScript到ArkTS的适配规则](https://docs.openharmony.cn/pages/v4.0/zh-cn/application-dev/quick-start/typescript-to-arkts-migration-guide.md)
+* [**从TypeScript到ArkTS的适配规则**](https://docs.openharmony.cn/pages/v4.0/zh-cn/application-dev/quick-start/typescript-to-arkts-migration-guide.md)
