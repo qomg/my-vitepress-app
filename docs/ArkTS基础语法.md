@@ -154,6 +154,7 @@ a++ // 0, a=1
 // 逻辑运算符 &&、||、!
 
 // 展开运算符
+class DerivedFromArray extends Uint16Array {};
 let arr1 = [1, 2, 3];
 let arr2 = new Uint16Array([4, 5, 6]);
 let arr3 = new DerivedFromArray([7, 8, 9]);
@@ -300,7 +301,7 @@ new Promise((resolve, reject) => {
 function test(): void {
    console.log('This is function is void');
 }
-test() {
+function test() {
     console.log('This is function is void');
 }
 // 箭头函数，Lambda函数
