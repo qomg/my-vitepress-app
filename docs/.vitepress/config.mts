@@ -31,7 +31,7 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ]
   },
-  base: '',
+  base: '/my-vitepress-app/',
   lang: 'zh-CN',
   head: [
     [
