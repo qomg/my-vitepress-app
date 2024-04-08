@@ -5,31 +5,59 @@ export default defineConfig({
   title: "My Awesome Project",
   description: "A VitePress Site",
   themeConfig: {
+    editLink: {
+      pattern: 'https://github.com/qomg/my-vitepress-app/edit/main/docs/:path',
+      text: 'Edit this page on GitHub'
+    },
+
+    siteTitle: 'My Custom Title',
+    logo: '/my-logo.svg',
+
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
-
-    sidebar: [
+      // { text: 'Examples', link: '/markdown-examples' },
+      // { text: 'HarmonyOS', link: '/harmonyos' },
       {
-        text: 'Examples',
+        text: 'Dropdown Menu',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          {
+            // Title for the section.
+            text: 'Section A Title',
+            items: [
+              { text: 'Section A Item A', link: '...' },
+              { text: 'Section B Item B', link: '...' }
+            ]
+          }
         ]
       },
-      {
-        text: 'HarmonyOS',
-        items: [
-          { text: 'ArkTS基础语法', link: '/ArkTS基础语法' }
-        ]
-      }
     ],
+
+    // sidebar: [
+    //   {
+    //     text: 'Examples',
+    //     items: [
+    //       { text: 'Markdown Examples', link: '/markdown-examples' },
+    //       { text: 'Runtime API Examples', link: '/api-examples' }
+    //     ]
+    //   },
+    //   {
+    //     text: 'HarmonyOS',
+    //     items: [
+    //       { text: 'ArkTS基础语法', link: '/ArkTS基础语法' },
+    //       { text: 'ArkUI组件', link: '/ArkUI组件' }
+    //     ]
+    //   }
+    // ],
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+    ],
+
+    footer: {
+      message: 'Released under the <a href="https://github.com/vuejs/vitepress/blob/main/LICENSE">MIT License</a>.',
+      copyright: 'Copyright © 2019-present <a href="https://github.com/yyx990803">Evan You</a>'
+    }
   },
   base: '/my-vitepress-app/',
   lang: 'zh-CN',
@@ -87,15 +115,15 @@ export default defineConfig({
       return url.toLowerCase().includes('ignore')
     }
   ],
-  async buildEnd(siteConfig) {
-    // ...
-  },
-  async postRender(context) {
-    // ...
-  },
-  async transformHead(context) {
-    // ...
-  },
+  // async buildEnd(siteConfig) {
+  //   // ...
+  // },
+  // async postRender(context) {
+  //   // ...
+  // },
+  // async transformHead(context) {
+  //   // ...
+  // },
   // async transformPageData(pageData, { siteConfig }) {
   //   pageData.contributors = await getPageContributors(pageData.relativePath)
   // }
