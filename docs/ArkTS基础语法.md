@@ -8,7 +8,11 @@ toc: true
 
 > TypeScript在JavaScript的基础上添加静态类型定义
 >
-> ArkTS在TypeScript的基础上，匹配ArkUI框架，扩展了声明式UI描述、自定义组件、动态扩展UI元素、状态管理和渲染控制、并发任务等多种能力。但对TypeScript语法做了一些限制。
+> ArkTS在TypeScript的基础上，匹配ArkUI框架，扩展了声明式UI描述、自定义组件、动态扩展UI元素、状态管理和渲染控制、并发任务等多种能力。
+>
+> ArkTS通过规范约束了TS中过于灵活而影响开发正确性或者给运行时带来不必要额外开销的特性。
+
+![ArkTS相比TS特性差异](ArkTS相比TS特性差异.png)
 
 ## ECMAScript关键字
 
@@ -19,13 +23,13 @@ toc: true
 |catch |finally |return |void|
 |continue |for |switch |while|
 |debugger |function |this| with|
-|default |if| throw|
-|delete |in |try|
+|default |if| throw||
+|delete |in |try||
 |class |enum| extends| super|
-|const |export |import|
+|const |export |import||
 |implements| let |private| public|
 |interface| package |protected |static|
-|yield|
+|yield||||
 
 ## 变量声明
 
